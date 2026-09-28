@@ -26,7 +26,7 @@ Five suppliers, each with a country, product type, unit price and stock quantity
 - Berlin Tools GmbH (Germany) holds the lowest at 45,000, and Germany has the smallest quantity at 150 units.
 
 ## Dashboard
-![Suppliers Dashboard](Screenshot%202026-07-11%20113034.png)
+![Suppliers Dashboard](Screenshot%202026-09-28%20112641.png)
 
 ## Files
 - `queries.sql`: SQL queries
