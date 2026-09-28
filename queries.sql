@@ -1,49 +1,34 @@
--- 1. Revenue by product type
-SELECT product_type, SUM(revenue_generate) AS total_revenue
-FROM supply_chain_data
-GROUP BY product_type
-ORDER BY total_revenue DESC;
+-- Supply Chain Analysis: Suppliers
+-- Tool: SQL (SQLite)
 
--- 2. Revenue by supplier
-SELECT supplier_name, SUM(revenue_generate) AS total_revenue
-FROM supply_chain_data
-GROUP BY supplier_name
-ORDER BY total_revenue DESC;
+-- 1. All suppliers in Nigeria
+SELECT *
+FROM suppliers
+WHERE country = 'Nigeria';
 
--- 3. Revenue by location
-SELECT location, SUM(revenue_generate) AS total_revenue
-FROM supply_chain_data
-GROUP BY location
-ORDER BY total_revenue DESC;
+-- 2. Total stock value per country
+SELECT country, SUM(unit_price * quantity) AS total_stock_value
+FROM suppliers
+GROUP BY country
+ORDER BY total_stock_value DESC;
 
--- 4. Average shipping cost by transport mode
-SELECT transportation_m, AVG(shipping_costs) AS avg_shipping_cost
-FROM supply_chain_data
-GROUP BY transportation_m
-ORDER BY avg_shipping_cost DESC;
+-- 3. Average unit price per country
+SELECT country, AVG(unit_price) AS avg_unit_price
+FROM suppliers
+GROUP BY country;
 
--- 5. Defect rate by product type
-SELECT product_type, AVG(defect_rates) AS avg_defect_rates
-FROM supply_chain_data
-GROUP BY product_type
-ORDER BY avg_defect_rates DESC;
+-- 4. Number of suppliers per country
+SELECT country, COUNT(*) AS supplier_count
+FROM suppliers
+GROUP BY country;
 
--- 6. Product type performance labelled
-SELECT product_type, SUM(revenue_generate) AS total_revenue,
-CASE WHEN SUM(revenue_generate) > 200000 THEN 'High Revenue'
-     ELSE 'Low Revenue'
-END AS performance
-FROM supply_chain_data
-GROUP BY product_type;
+-- 5. Countries with total stock value above 100,000
+SELECT country, SUM(unit_price * quantity) AS total_stock_value
+FROM suppliers
+GROUP BY country
+HAVING total_stock_value > 100000;
 
--- 7. Total shipping cost by carrier
-SELECT shipping_carrier, SUM(shipping_costs) AS total_shipping_costs
-FROM supply_chain_data
-GROUP BY shipping_carrier
-ORDER BY total_shipping_costs DESC;
-
--- 8. Average price by product type
-SELECT product_type, AVG(price) AS avg_price
-FROM supply_chain_data
-GROUP BY product_type
-ORDER BY avg_price DESC;
+-- 6. Flag products as Reorder or OK based on quantity
+SELECT name, product, quantity,
+       CASE WHEN quantity < 200 THEN 'Reorder' ELSE 'OK' END AS stock_status
+FROM suppliers;
